@@ -12,15 +12,14 @@ class PopularRepository(private val api: PopularApiService) :
     BaseRepository {
 
     @Throws(Exception::class)
-    fun getPopularArticles(theme: String): PopularResponse {
-        val response = api.getPopular(theme).execute()
-        if(response.isSuccessful){
-            return response.body() ?: PopularResponse()
+    fun getPopularArticles(theme: String): PopularResponse = api.getPopular(theme).execute().run {
+        if (isSuccessful) {
+            body() ?: PopularResponse()
         } else {
-            when(response.code()){
+            when (this.code()) {
                 NO_QUOTAS_CODE -> throw PopularError.getTooManyRequestsError()
                 NO_API_KEY_CODE -> throw PopularError.getCheckYourApiKeyError()
-                else -> throw Exception(response.message())
+                else -> throw Exception(message())
             }
         }
     }
