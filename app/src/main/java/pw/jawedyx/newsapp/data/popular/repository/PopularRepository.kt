@@ -16,7 +16,7 @@ class PopularRepository(private val api: PopularApiService) :
         if (isSuccessful) {
             body() ?: PopularResponse()
         } else {
-            when (this.code()) {
+            when (code()) {
                 NO_QUOTAS_CODE -> throw PopularError.getTooManyRequestsError()
                 NO_API_KEY_CODE -> throw PopularError.getCheckYourApiKeyError()
                 else -> throw Exception(message())
