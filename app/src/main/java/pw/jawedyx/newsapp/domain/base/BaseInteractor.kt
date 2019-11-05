@@ -7,9 +7,15 @@ import kotlinx.coroutines.launch
 import pw.jawedyx.newsapp.data.Params
 import pw.jawedyx.newsapp.data.Result
 
-abstract class BaseInteractor<RESPONSE : Any, PARAMS : Params> {
+/**
+ * Базовый интерактор
+ *
+ * Примечание: тут лучше подходит abstract, чем interface,
+ * но чтобы забиндить реализацию пришлось сделать интерфейс.
+ */
+interface BaseInteractor<RESPONSE : Any, PARAMS : Params> {
 
-    abstract fun execute(params: PARAMS): Result<RESPONSE>
+    fun execute(params: PARAMS): Result<RESPONSE>
 
     /**
      * Выполнить в фоне и вернуть результат в [resultAction]
@@ -17,7 +23,7 @@ abstract class BaseInteractor<RESPONSE : Any, PARAMS : Params> {
      * @param scope вьюмодели
      * @param params аргументы для репозитория
      */
-    fun inForeground(
+    fun inBackground(
         scope: CoroutineScope,
         params: PARAMS,
         resultAction: (Result<RESPONSE>) -> Unit = {}

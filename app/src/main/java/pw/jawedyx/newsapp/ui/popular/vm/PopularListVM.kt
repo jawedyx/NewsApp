@@ -1,4 +1,4 @@
-package pw.jawedyx.newsapp.ui.vm
+package pw.jawedyx.newsapp.ui.popular.vm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,12 +7,13 @@ import androidx.lifecycle.viewModelScope
 import pw.jawedyx.newsapp.data.Result
 import pw.jawedyx.newsapp.data.popular.PopularError
 import pw.jawedyx.newsapp.data.popular.StoryModel
-import pw.jawedyx.newsapp.utils.ResourceProvider
+import pw.jawedyx.newsapp.domain.base.BaseInteractor
 import pw.jawedyx.newsapp.domain.popular.PopularInteractor
+import pw.jawedyx.newsapp.utils.ResourceProviderInterface
 
 class PopularListVM(
-    private val interactor: PopularInteractor,
-    private val resProvider: ResourceProvider
+    private val interactor: BaseInteractor<List<StoryModel>, PopularInteractor.PopularParams>,
+    private val resProvider: ResourceProviderInterface
 ) : ViewModel() {
 
     private val newsLiveData = MutableLiveData<List<StoryModel>>()
@@ -23,7 +24,7 @@ class PopularListVM(
 
     fun doRequest() {
         val params = PopularInteractor.PopularParams("science")
-        interactor.inForeground(viewModelScope, params) {
+        interactor.inBackground(viewModelScope, params) {
             when (it) {
                 is Result.Success -> newsLiveData.value = it.data
                 is Result.Error -> toastLiveData.value = when (it.exception) {

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">NewsApp</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Web errors -->
     <string name="popular_no_quotas">Too many requests. You reached your per minute or per day rate limit.</string>
     <string name="popular_no_api_key">Unauthorized request. Make sure api-key is set.</string>
 </resources>

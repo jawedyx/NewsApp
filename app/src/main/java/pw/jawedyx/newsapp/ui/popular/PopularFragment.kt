@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import pw.jawedyx.newsapp.R
-import pw.jawedyx.newsapp.ui.vm.PopularListVM
+import pw.jawedyx.newsapp.ui.popular.vm.PopularListVM
 
 class PopularFragment : Fragment() {
 
