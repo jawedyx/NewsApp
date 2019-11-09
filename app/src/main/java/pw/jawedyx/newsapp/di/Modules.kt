@@ -1,6 +1,5 @@
 package pw.jawedyx.newsapp.di
 
-import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -25,20 +24,16 @@ private val baseModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-    single { ResourceProvider(androidApplication().applicationContext) } bind ResourceProviderInterface::class
+    single { ResourceProvider(get()) } bind ResourceProviderInterface::class
 }
 
 private val popularModule = module {
-    single { providePopularApi(get()) }
+    single { get<Retrofit>().create(PopularApiService::class.java) }
 
     factory { PopularRepository(get()) }
     factory { PopularMapper() } bind BaseMapper::class
     factory { PopularInteractor(get(), get()) } bind BaseInteractor::class
     viewModel { PopularListVM(get(), get()) }
 }
-
-fun providePopularApi(retrofit: Retrofit): PopularApiService = retrofit.create(
-    PopularApiService::class.java
-)
 
 val koinModules = listOf(baseModule, popularModule)

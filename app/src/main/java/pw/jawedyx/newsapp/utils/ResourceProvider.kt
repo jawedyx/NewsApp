@@ -8,7 +8,7 @@ import android.content.Context
  * Поставляет ресурсы приложения
  * @param context Контекст приложения
  */
-data class ResourceProvider(private val context: Context): ResourceProviderInterface{
+data class ResourceProvider(private val context: Context) : ResourceProviderInterface {
 
     /**
      * Возвращает строку по значению ресурса
