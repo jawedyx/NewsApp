@@ -16,13 +16,14 @@ class PopularListVM(
     private val resProvider: ResourceProviderInterface
 ) : ViewModel() {
 
+    init {
+        doRequest()
+    }
+
     private val newsLiveData = MutableLiveData<List<StoryModel>>()
     private val toastLiveData = MutableLiveData<String>()
 
-    val toasts: LiveData<String> = toastLiveData
-    val content: LiveData<List<StoryModel>> = newsLiveData
-
-    fun doRequest() {
+    private fun doRequest() {
         val params = PopularInteractor.PopularParams("science")
         interactor.inBackground(viewModelScope, params) {
             when (it) {
@@ -35,4 +36,6 @@ class PopularListVM(
         }
     }
 
+    val toasts: LiveData<String> = toastLiveData
+    val content: LiveData<List<StoryModel>> = newsLiveData
 }

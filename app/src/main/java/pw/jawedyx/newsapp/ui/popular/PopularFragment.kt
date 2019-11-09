@@ -18,10 +18,7 @@ class PopularFragment : Fragment() {
 
     private val vm: PopularListVM by viewModel()
 
-    private val adapter = PopularAdapter(emptyList()) { storyModel ->
-        Log.d("click", "$storyModel has been clicked")
-    }
-
+    private lateinit var adapter: PopularAdapter
     lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
@@ -33,17 +30,14 @@ class PopularFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = PopularAdapter(viewLifecycleOwner, vm.content) { storyModel ->
+            Log.d("click", "$storyModel has been clicked")
+        }
         recyclerView = view.findViewById<RecyclerView>(R.id.list).also {
             it.adapter = adapter
         }
-
         vm.toasts.observe(viewLifecycleOwner, Observer { message ->
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         })
-        vm.content.observe(viewLifecycleOwner, Observer { list ->
-            adapter.updateContent(list)
-        })
-
-        vm.doRequest()
     }
 }
