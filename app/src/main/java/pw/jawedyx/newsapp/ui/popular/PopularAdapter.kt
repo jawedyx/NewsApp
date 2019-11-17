@@ -4,9 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import pw.jawedyx.newsapp.R
 import pw.jawedyx.newsapp.data.popular.StoryModel
@@ -19,16 +16,9 @@ import pw.jawedyx.newsapp.data.popular.StoryModel
  * @param clickAction действие по клику на элемент списка
  */
 class PopularAdapter(
-    fragmentLifecycleOwner: LifecycleOwner,
-    private var items: LiveData<List<StoryModel>>,
+    private var items: List<StoryModel> = emptyList(),
     private val clickAction: (StoryModel) -> Unit
 ) : RecyclerView.Adapter<PopularAdapter.ViewHolder>() {
-
-    init {
-        items.observe(fragmentLifecycleOwner, Observer {
-            notifyDataSetChanged()
-        })
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -38,12 +28,15 @@ class PopularAdapter(
         )
     )
 
-    override fun getItemCount(): Int = items.value?.size ?: 0
+    override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        items.value?.let {
-            holder.bind(it[position])
-        }
+        holder.bind(items[position])
+    }
+
+    fun updateContent(newContent: List<StoryModel>) {
+        items = newContent
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(private val itemHolder: View) : RecyclerView.ViewHolder(itemHolder) {

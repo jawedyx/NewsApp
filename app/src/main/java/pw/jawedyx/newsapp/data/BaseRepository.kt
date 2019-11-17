@@ -1,4 +1,6 @@
 package pw.jawedyx.newsapp.data
 
-interface BaseRepository
+interface BaseRepository {
+    val className: String
+}
 
